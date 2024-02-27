@@ -189,6 +189,8 @@ RUN  geographiclib-get-geoids egm96-5 && \
     geographiclib-get-magnetic emm2015
 RUN pip3 install future
 
+RUN pip3 install transformations
+
 # create and start as LOCAL_USER_ID
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
