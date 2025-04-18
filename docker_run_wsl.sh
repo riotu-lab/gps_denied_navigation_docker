@@ -2,8 +2,8 @@
 
 # This is needed to avoid permission issues
 # Ref: https://github.com/microsoft/WSL/issues/7507#issuecomment-1564150300
-sudo chmod 666 /dev/dri/*
-sudo chmod 666 /dev/dxg
+# sudo chmod 666 /dev/dri/*
+# sudo chmod 666 /dev/dxg
 
 # Use Nvidia GPU
 export MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA
@@ -34,8 +34,10 @@ DOCKER_OPTS="$DOCKER_OPTS --device /dev/dri/renderD128"
 # DOCKER_OPTS="$DOCKER_OPTS -e DISPLAY=host.docker.internal:0.0"
 # DOCKER_OPTS="$DOCKER_OPTS -e LIBGL_ALWAYS_INDIRECT=0"
 DOCKER_OPTS="$DOCKER_OPTS -e MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA"
-# DOCKER_OPTS="$DOCKER_OPTS -p 14550:14550"
+DOCKER_OPTS="$DOCKER_OPTS -p 14550:14550"
+DOCKER_OPTS="$DOCKER_OPTS -p 14556:14556"
 DOCKER_OPTS="$DOCKER_OPTS --gpus all"
+DOCKER_OPTS="$DOCKER_OPTS -e RMW_IMPLEMENTATION=rmw_zenoh_cpp"
 echo "GPU arguments: $DOCKER_OPTS"
 
 SUDO_PASSWORD="user"
@@ -67,7 +69,7 @@ CMD="export DEV_DIR=/home/user/shared_volume && \
         fi &&\
          /bin/bash"
 if [[ -n "$GIT_TOKEN" ]] && [[ -n "$GIT_USER" ]]; then
-    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$GIT_TOKEN && $CMD"
+    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$RIOTU_GIT_TOKEN && $CMD"
 fi
 
 if [[ -n "$SUDO_PASSWORD" ]]; then
@@ -98,7 +100,7 @@ else
         /bin/bash"
 
     if [[ -n "$GIT_TOKEN" ]] && [[ -n "$GIT_USER" ]]; then
-    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$GIT_TOKEN && $CMD"
+    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$RIOTU_GIT_TOKEN && $CMD"
     fi
 
     if [[ -n "$SUDO_PASSWORD" ]]; then

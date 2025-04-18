@@ -286,6 +286,8 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 RUN mkdir -p /usr/local/share/middleware_profiles
 COPY middleware_profiles/*profile.xml /usr/local/share/middleware_profiles/
 ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+# ENV RMW_IMPLEMENTATION=rmw_zenoh_cpp
+
 
 WORKDIR /home/user
 

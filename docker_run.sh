@@ -100,7 +100,7 @@ CMD="export DEV_DIR=/home/user/shared_volume && \
         fi &&\
          /bin/bash"
 if [[ -n "$GIT_TOKEN" ]] && [[ -n "$GIT_USER" ]]; then
-    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$GIT_TOKEN && $CMD"
+    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$RIOTU_GIT_TOKEN && $CMD"
 fi
 
 if [[ -n "$SUDO_PASSWORD" ]]; then
@@ -130,7 +130,7 @@ else
         /bin/bash"
 
     if [[ -n "$GIT_TOKEN" ]] && [[ -n "$GIT_USER" ]]; then
-    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$GIT_TOKEN && $CMD"
+    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$RIOTU_GIT_TOKEN && $CMD"
     fi
 
     if [[ -n "$SUDO_PASSWORD" ]]; then
