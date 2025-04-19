@@ -2,8 +2,8 @@
 
 # This is needed to avoid permission issues
 # Ref: https://github.com/microsoft/WSL/issues/7507#issuecomment-1564150300
-# sudo chmod 666 /dev/dri/*
-# sudo chmod 666 /dev/dxg
+sudo chmod 666 /dev/dri/*
+sudo chmod 666 /dev/dxg
 
 # Use Nvidia GPU
 export MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA
