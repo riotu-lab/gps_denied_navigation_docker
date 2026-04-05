@@ -4,20 +4,20 @@
 
 FROM ubuntu:jammy
 
-ENV LANG C.UTF-8
-ENV LC_AL C.UTF-8
-ENV ROS2_DISTRO humble
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV ROS2_DISTRO=humble
 # Conveyor belt example works in Gazebo harmonic not garden
-# ENV GZ_RELEASE garden
-ENV GZ_RELEASE harmonic
+# ENV GZ_RELEASE=garden
+ENV GZ_RELEASE=harmonic
 LABEL maintainer="Mohamed Abdelkader <mohamedashraf123@gmail.com>"
 
 #
 # Install ROS ros humble-dekptop-full
 #
-ENV DEBIAN_FRONTEND noninteractive
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 		bzip2 \
@@ -159,7 +159,7 @@ RUN apt-get install python-is-python3
 
 #Add mcap to bag things in ROS2
 RUN VERSION="releases/mcap-cli/v0.0.50" && \
-    RELEASE_URL=$(curl -s https://api.github.com/repos/foxglove/mcap/releases | jq -r --arg VERSION "$VERSION" '.[] | select(.tag_name == $VERSION) | .assets[0].browser_download_url') && \
+    RELEASE_URL=$(curl -s "https://api.github.com/repos/foxglove/mcap/releases/tags/${VERSION}" | jq -r --arg ARCH "$(dpkg --print-architecture)" '.assets[] | select(.name == "mcap-linux-"+$ARCH) | .browser_download_url') && \
     echo "Downloading release $VERSION from: $RELEASE_URL" && \
     curl -L -o /bin/mcap "$RELEASE_URL" && \
     cd /bin && chmod +x mcap
@@ -219,7 +219,7 @@ RUN useradd --shell /bin/bash -u 1000 -c "" -m user && usermod -a -G dialout use
 
 
 # Some QT-Apps/Gazebo don't not show controls without this
-ENV QT_X11_NO_MITSHM 1
+ENV QT_X11_NO_MITSHM=1
 
 # Use UTF8 encoding in java tools (needed to compile jMAVSim)
 ENV JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8
