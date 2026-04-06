@@ -40,6 +40,11 @@ DOCKER_OPTS="$DOCKER_OPTS --gpus all"
 DOCKER_OPTS="$DOCKER_OPTS -e RMW_IMPLEMENTATION=rmw_zenoh_cpp"
 echo "GPU arguments: $DOCKER_OPTS"
 
+# Support SSH agent forwarding
+if [[ -n "$SSH_AUTH_SOCK" ]]; then
+    DOCKER_OPTS="$DOCKER_OPTS -v $SSH_AUTH_SOCK:/tmp/ssh_auth_sock -e SSH_AUTH_SOCK=/tmp/ssh_auth_sock"
+fi
+
 SUDO_PASSWORD="user"
 
 # This will enable running containers with different names
@@ -69,7 +74,7 @@ CMD="export DEV_DIR=/home/user/shared_volume && \
         fi &&\
          /bin/bash"
 if [[ -n "$GIT_TOKEN" ]] && [[ -n "$GIT_USER" ]]; then
-    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$RIOTU_GIT_TOKEN && $CMD"
+    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$GIT_TOKEN && $CMD"
 fi
 
 if [[ -n "$SUDO_PASSWORD" ]]; then
@@ -100,7 +105,7 @@ else
         /bin/bash"
 
     if [[ -n "$GIT_TOKEN" ]] && [[ -n "$GIT_USER" ]]; then
-    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$RIOTU_GIT_TOKEN && $CMD"
+    CMD="export GIT_USER=$GIT_USER && export GIT_TOKEN=$GIT_TOKEN && $CMD"
     fi
 
     if [[ -n "$SUDO_PASSWORD" ]]; then

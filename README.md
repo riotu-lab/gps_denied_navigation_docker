@@ -23,27 +23,49 @@ This builds a Docker image that has the required PX4-Autopilot source code and t
 The Gazebo version in the provided Docker image is Gazebo `garden`.
 
 # Run a Docker Container
+
+There are two ways to provide GitHub authentication for cloning repositories inside the container:
+
+## 1. Using GitHub Token (HTTPS)
 * Obtain a valid `GIT_TOKEN` from GitHub admins.
 * `export GIT_USER=github_user_name && export GIT_TOKEN=git_token_that_you_obtained_from_admins`
-* You can add the above exports you your `~/.bashr` script to avoid exporting them in each new terminal.
+* You can add the above exports to your `~/.bashrc` script to avoid exporting them in each new terminal.
+
+## 2. Using SSH Agent Forwarding (Recommended)
+This method is more secure as it doesn't expose your token in environment variables. It assumes you have an SSH key added to your GitHub account and an SSH agent running on your host.
+
+* Ensure your SSH agent is running and has your GitHub key:
+  ```bash
+  ssh-add -L
+  ```
+  If no keys are listed, add your key: `ssh-add ~/.ssh/id_ed25519` (or your specific key).
+* The `docker_run.sh` (or `docker_run_wsl.sh`) script will automatically detect and mount your SSH agent socket if the `SSH_AUTH_SOCK` environment variable is set.
+* Inside the container, you can optionally configure git to use SSH instead of HTTPS for GitHub URLs:
+  ```bash
+  git config --global url."git@github.com:".insteadOf "https://github.com/"
+  ```
+  This ensures that any scripts using HTTPS URLs will automatically switch to SSH.
+
+## Running the Container
 * Run the following script to run and enter the docker container  
     ```bash
     cd gps_denied_navigation_docker
     ./docker_run.sh
     ```
-    This will run a docker container named `gpsdnav` 
+    This will run a docker container named `gpsdnav`. 
 
 * Once the above script is executed successfully, you should be in the docker container terminal. The docker defualt name is `gpsdnav`. The username inside the docker and its password is `user`
 
 
 # Build ros2_ws
-Enter the docker container, and execute the following
+* Make sure that you setup your local SSH key with GitHub before you proceed.
+* Enter the docker container, and execute the following
 ```bash
 cd ~/shared_volume
 # Execute the following step, if you have not created the ros2_ws already
 mkdir -p ros2_ws/src
 cd ros2_ws/src
-git clone https://github.com/riotu-lab/gps_denied_navigation_sim.git
+git clone git@github.com:riotu-lab/gps_denied_navigation_sim.git
 cd gps_denied_navigation_sim
 ./install.sh
 ```
