@@ -256,6 +256,9 @@ RUN apt update && apt install -y fuse libfuse2 \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
+# for TERCOM packages
+RUN pip3 install "numpy<2.0.0" scipy rasterio pyproj pandas matplotlib
+
 # create and start as LOCAL_USER_ID
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
@@ -263,7 +266,8 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 # Copy middleware profiles
 RUN mkdir -p /usr/local/share/middleware_profiles
 COPY middleware_profiles/*profile.xml /usr/local/share/middleware_profiles/
-ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+#ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+ENV RMW_IMPLEMENTATION=rmw_zenoh_cpp
 
 WORKDIR /home/user
 
