@@ -41,3 +41,7 @@ ENV JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8
 # Install JSBSim
 RUN wget https://github.com/JSBSim-Team/jsbsim/releases/download/v1.1.13/JSBSim-devel_1.1.13-986.jammy.amd64.deb
 RUN dpkg -i JSBSim-devel_1.1.13-986.jammy.amd64.deb
+
+# Install QGroundControl
+COPY scripts/install_qgc.sh /tmp/install_qgc.sh
+RUN /tmp/install_qgc.sh

@@ -23,6 +23,7 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 		gcc \
 		gdb \
 		git \
+		git-lfs \
 		gnupg \
 		gosu \
 		lcov \

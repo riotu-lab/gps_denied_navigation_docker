@@ -83,6 +83,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y --quiet --no-install-recommends i
 	gcc \
 	gdb \
 	git \
+	git-lfs \
 	lcov \
 	libfuse2 \
 	libxml2-dev \

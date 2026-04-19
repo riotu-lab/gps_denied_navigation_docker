@@ -31,6 +31,7 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 		gcc \
 		gdb \
 		git \
+		git-lfs \
 		gnupg \
 		gosu \
 		lcov \
@@ -129,6 +130,12 @@ RUN apt update &&  apt install -y ros-humble-rqt-tf-* \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
+
+#
+# Install QGroundControl
+#
+COPY scripts/install_qgc.sh /tmp/install_qgc.sh
+RUN /tmp/install_qgc.sh
 
 # create and start as LOCAL_USER_ID
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
